@@ -1,5 +1,5 @@
 from pymongo import MongoClient
-url = "mongodb+srv://admin:admin@cluster0.mclts.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+url = "mongodb+srv://admin:admin@cluster0.mclts.mongodb.net/pytech?retryWrites=true&w=majority";
  
 client = MongoClient(url)
 
