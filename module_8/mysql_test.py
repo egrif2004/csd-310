@@ -28,3 +28,4 @@ except mysql.connector.Error as err:
 
 finally:
     db.close()
+    ##
