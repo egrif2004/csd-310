@@ -1,0 +1,116 @@
+
+DROP USER IF EXISTS 'whatabook_user'@'localhost';
+
+
+CREATE USER 'whatabook_user'@'localhost' IDENTIFIED WITH mysql_native_password BY 'MySQL8IsGreat!';
+ 
+GRANT ALL PRIVILEGES ON whatabook.* TO'whatabook_user'@'localhost';
+
+
+ALTER TABLE wishlist DROP FOREIGN KEY fk_book;
+ALTER TABLE wishlist DROP FOREIGN KEY fk_user;
+
+DROP TABLE IF EXISTS store;
+DROP TABLE IF EXISTS book;
+DROP TABLE IF EXISTS wishlist;
+DROP TABLE IF EXISTS user;
+
+/*
+    Create table(s)
+*/
+CREATE TABLE store (
+    store_id    INT             NOT NULL    AUTO_INCREMENT,
+    locale      VARCHAR(500)    NOT NULL,
+    PRIMARY KEY(store_id)
+);
+
+CREATE TABLE book (
+    book_id     INT             NOT NULL    AUTO_INCREMENT,
+    book_name   VARCHAR(200)    NOT NULL,
+    author      VARCHAR(200)    NOT NULL,
+    details     VARCHAR(500),
+    PRIMARY KEY(book_id)
+);
+
+CREATE TABLE user (
+    user_id         INT         NOT NULL    AUTO_INCREMENT,
+    first_name      VARCHAR(75) NOT NULL,
+    last_name       VARCHAR(75) NOT NULL,
+    PRIMARY KEY(user_id) 
+);
+
+CREATE TABLE wishlist (
+    wishlist_id     INT         NOT NULL    AUTO_INCREMENT,
+    user_id         INT         NOT NULL,
+    book_id         INT         NOT NULL,
+    PRIMARY KEY (wishlist_id),
+    CONSTRAINT fk_book
+    FOREIGN KEY (book_id)
+        REFERENCES book(book_id),
+    CONSTRAINT fk_user
+    FOREIGN KEY (user_id)
+        REFERENCES user(user_Id)
+);
+
+
+INSERT INTO store(locale)
+    VALUES('2416 n. 196th st, Elkhorn, NE 68022');
+
+INSERT INTO book(book_name, author, details)
+    VALUES('A Game of Thrones', 'George R.R. Martin', 'The first book of 5');
+
+INSERT INTO book(book_name, author, details)
+    VALUES('A Clash of Kings', 'George R.R. Martin', 'The second book of 5');
+
+INSERT INTO book(book_name, author, details)
+    VALUES('A Storm of Swords', 'George R.R. Martin', "The third book of 5");
+
+INSERT INTO book(book_name, author, details)
+    VALUES('A Feast for Crows', 'George R.R. Martin', 'The fourth book of 5');
+
+INSERT INTO book(book_name, author, details)
+    VALUES('A Dance with Dragons', 'George R.R. Martin', 'The last book of 5 books');
+
+INSERT INTO book(book_name, author, details)
+    VALUES("A Game of Thrones, Volume 1", 'Daniel Abraham', 'a Graphic novel');
+
+INSERT INTO book(book_name, author, details)
+    VALUES('A Game of Thrones, Volume 2', 'Daniel Abraham', 'a graphic novel');
+
+INSERT INTO book(book_name, autho, details)
+    VALUES('A Game of Thrones, Volume 3', 'Daniel Abraham', 'a graphic novel');
+
+INSERT INTO book(book_name, author, details)
+    VALUES('A Game of Thrones, Volume 4', 'Daniel Abraham', 'a graphic novel');
+
+
+
+
+INSERT INTO user(first_name, last_name) 
+    VALUES('Evan', 'Griffiths');
+
+INSERT INTO user(first_name, last_name)
+    VALUES('Angie', 'Griffiths');
+
+INSERT INTO user(first_name, last_name)
+    VALUES('Isaiah', 'Griffiths');
+
+
+
+INSERT INTO wishlist(user_id, book_id) 
+    VALUES (
+        (SELECT user_id FROM user WHERE first_name = 'Evan'), 
+        (SELECT book_id FROM book WHERE book_name = 'A Game of Thrones, Volume 2')
+    );
+
+INSERT INTO wishlist(user_id, book_id)
+    VALUES (
+        (SELECT user_id FROM user WHERE first_name = 'Angie'),
+        (SELECT book_id FROM book WHERE book_name = 'A Dance with Dragons')
+    );
+
+INSERT INTO wishlist(user_id, book_id)
+    VALUES (
+        (SELECT user_id FROM user WHERE first_name = 'Isaiah'),
+        (SELECT book_id FROM book WHERE book_name = 'A Game of Thrones, Volume 4 b')
+    );
